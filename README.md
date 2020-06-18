@@ -48,15 +48,30 @@ There are 3 tables I use
 
     - The number of steps / rectangles to use in estimating the area
 
-2. `rect_partial_values` - As each thread finishes calculating its portion of the area, it stores it in this table, along with the timestamp of when it completed its calculation
+2. `rect_partial_values` - As each thread finishes calculating its portion of the area, it stores it in this table, alongside which thread is adding it (for debugging purposes)
+    
+3. `rect_results` - Stores the overall result (SUM of the partial values) when all threads are finished along with the timestamp of the completion
 
     - When the algorithm is first started, the timestamp of the start is also inserted into this table, thus allowing for easy calulation of the total computation time: MAX(timestamp) - MIN(timestamp)
 
-3. `rect_results`
-
 ### Procedures
 
-#### The Trigger
+1. `run_rect` - This is the procedure the user actually calls to start the computation.  It performs the following actions: 
+    1. Selects the parameters from the `rect_params` table
+    
+    2. Inserts the start timestamp into the `rect_results` table
+    
+    3. Loops over the number of threads to create, then for each thread, calls `dbms_job.submit` to have each thread call the procedure `partial_rect`
+
+2. `partial_rect` - This procedure performs the actual work calculating Riemann sums.  It uses its thread number (rank) to determine which chunk of the workload to work on.  It's a standard Riemann sum calculation beyond that.  Then, the partial sum is inserted into `rect_partial_values` table, which triggers the `rect_completed` [trigger to check for completion.](#the-trigger-`rect_completed`)
+
+3. `calc_runtime` -  This is the way for the user to check whether the work is done, and if so, calculate the total runtime.  
+
+    - While the algorithm is running, the user can call this procedure, and check their `DBMS_OUTPUT`.  A message will be printed that says `Runtime cannot be calculated yet`.
+
+    - Once complete, calling this function again will calculate the runtime by selecting the start and end times of the most recent run of the `run_rect` procedure and output it to `DBMS_OUTPUT`.
+
+#### The Trigger: `rect_completed`
 
 
 
