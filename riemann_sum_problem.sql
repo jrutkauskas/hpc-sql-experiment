@@ -141,5 +141,5 @@ end;
 call run_rect();
 
 -- if you run this immediately, while the DBMS is still running the algorithm, this will print out an error.
--- wait a 
+-- wait a while first, then call.
 call calc_runtime();
