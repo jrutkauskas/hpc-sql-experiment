@@ -114,7 +114,7 @@ These 12 threads achieved an average performance of around 25 seconds total to c
 
 What this proves is that is *is* possible to perform work *in Oracle PL/SQL* faster in parallel than it is to do it in serial.
 
-One thing this graph does **not** show is the time it takes to do this computation in a different language, and that is where this truly becomes pathetic.  On the exact same machine, running the same algorithm in *serial* in C  completes the same work in about **1 second**.  So, the PL/SQL, at its peak performance across multiple threads, takes 25 times longer to complete the work, and with a lot fewer headaches.  
+One thing this graph does **not** show is the time it takes to do this computation in a different language, and that is where this truly becomes pathetic.  On the exact same machine, running the same algorithm in *serial* in C  completes the same work in about **1 second**.  So, the PL/SQL, at its peak performance across multiple threads, takes 25 times longer to complete the work, and with a lot more headaches.  
 
 From a performance standpoint, this proof-of-concept work shows the abysmal runtimes of anything in PL/SQL compared to doing the same work in a different environment
 
