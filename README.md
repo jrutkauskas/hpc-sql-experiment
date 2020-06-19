@@ -135,7 +135,7 @@ Thinking about it, running this type of code on a DBMS does present a few limite
 
     - Of course, there's the caveat that this would slow the database server to a crawl and possibly cause problems for other users of the database
 
-- This parallel computation could be attached to a trigger to automatically compute something based on new data added to a table (its possible to add support for concurrency by also utilizing a job id with each parallel computation)
+- This parallel computation could be attached to a trigger to automatically compute something based on new data added to a table (It's possible to add support for concurrency by also utilizing a job id with each parallel computation)
 
 - The parallel computation is still faster than doing it in a single thread in Oracle, so if I were already doing some parallelizable work in the DBMS, I could use code like this to possibly increase performance
 
