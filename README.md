@@ -63,7 +63,7 @@ There are 3 tables I use
     
     3. Loops over the number of threads to create, then for each thread, calls `dbms_job.submit` to have each thread call the procedure `partial_rect`
 
-2. `partial_rect` - This procedure performs the actual work calculating Riemann sums.  It uses its thread number (rank) to determine which chunk of the workload to work on.  It's a standard Riemann sum calculation beyond that.  Then, the partial sum is inserted into `rect_partial_values` table, which triggers the `rect_completed` [trigger to check for completion.](#the-trigger-`rect_completed`)
+2. `partial_rect` - This procedure performs the actual work calculating Riemann sums.  It uses its thread number (rank) to determine which chunk of the workload to work on.  It's a standard Riemann sum calculation beyond that.  Then, the partial sum is inserted into `rect_partial_values` table, which triggers the `rect_completed` [trigger to check for completion.](#the-trigger-rect_completed)
 
 3. `calc_runtime` -  This is the way for the user to check whether the work is done, and if so, calculate the total runtime.  
 
@@ -91,8 +91,7 @@ On the off-chance you have failed to heed my warnings and actually want to run t
 
     - ```sql
         call calc_runtime();
-    ```
-
+        ```
 The result will be printed to `DBMS_OUTPUT`.
 
 ### Error Handling
@@ -109,7 +108,9 @@ Performance is surprisingly terrible
 
 The best performance I could get out of this code used 12 separate jobs, which I approximate to be equal to a thread, though I can't guarantee how Oracle will handle them.
 
-These 12 threads achieved an average performance of around 25 seconds total to complete the computation.  As a comparison, the single threaded average runtime was close to 72 seconds.  This achieves a speedup of: ![S = 2.88](https://render.githubusercontent.com/render/math?math=S%20%3D%20%5Cfrac%7BT_%7Bserial%7D%7D%7BT_%7Bparallel%7D%7D%20%3D%20%5Cfrac%7B72s%7D%7B25s%7D%20%3D%202.88).
+These 12 threads achieved an average performance of around 25 seconds total to complete the computation.  As a comparison, the single threaded average runtime was close to 72 seconds.  This achieves a speedup of: 
+
+![S = 2.88](https://render.githubusercontent.com/render/math?math=S%20%3D%20%5Cfrac%7BT_%7Bserial%7D%7D%7BT_%7Bparallel%7D%7D%20%3D%20%5Cfrac%7B72s%7D%7B25s%7D%20%3D%202.88)
 
 What this proves is that is *is* possible to perform work *in Oracle PL/SQL* faster in parallel than it is to do it in serial.
 
@@ -142,4 +143,4 @@ Honestly, now I've kind-of talked myself into thinking there are some, very limi
 
 ## Future Work
 
-None! I don't ever want to touch this again and I don't think anyone should either `:-)`
+None! I don't ever want to touch this again and I don't think anyone should either `:^)`
